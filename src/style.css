@@ -13,6 +13,17 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
