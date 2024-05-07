@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 // @ts-expect-error - glsl import
 import waveFragmentShader from './shaders/wave/fragment.glsl';
@@ -23,6 +24,9 @@ camera.position.y = 100;
 camera.position.x = 100;
 camera.lookAt(0, 0, 0);
 
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+
 const geometry = new THREE.PlaneGeometry(100, 100, 50, 50);
 
 const material = new THREE.RawShaderMaterial({
@@ -43,3 +47,10 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.render(scene, camera);
+
+const tick = (): number => {
+  renderer.render(scene, camera);
+  controls.update();
+  return window.requestAnimationFrame(() => tick());
+};
+tick();
