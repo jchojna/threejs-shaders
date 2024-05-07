@@ -1,5 +1,10 @@
 import * as THREE from 'three';
 
+// @ts-expect-error - glsl import
+import waveFragmentShader from './shaders/wave/fragment.glsl';
+// @ts-expect-error - glsl import
+import waveVertexShader from './shaders/wave/vertex.glsl';
+
 import './style.css';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
@@ -21,24 +26,9 @@ camera.lookAt(0, 0, 0);
 const geometry = new THREE.PlaneGeometry(100, 100, 50, 50);
 
 const material = new THREE.RawShaderMaterial({
-  vertexShader: `
-    uniform mat4 modelMatrix;
-    uniform mat4 viewMatrix;
-    uniform mat4 projectionMatrix;
-
-    attribute vec3 position;
-
-    void main() {
-      gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
-    }
-  `,
-  fragmentShader: `
-    precision mediump float;
-
-    void main() {
-      gl_FragColor = vec4(0.4, 1.0, 0.4, 1.0);
-    }
-  `,
+  vertexShader: waveVertexShader,
+  fragmentShader: waveFragmentShader,
+  wireframe: true,
 });
 
 const mesh = new THREE.Mesh(geometry, material);
